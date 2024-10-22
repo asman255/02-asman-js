@@ -92,11 +92,50 @@ const prod_name = document.getElementById("prod_name");
 const prod_price = document.getElementById("prod_price");
 const prod_img = document.getElementById("prod_img");
 const prod_status = document.getElementById("prod_status");
-prod_id.innerText=Date.now();
+
+const btnadd2cart = document.getElementById("btnadd2cart");
+
+
 
 btnCreate.addEventListener("click", () => {
-    const newProduct = new products(Date.now(), prod_name.value, prod_price.value, prod_img.value, prod_status.value);
+    const idDate = Date.now();
+    const newProduct = new products(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
     arrProducts.push(newProduct);
     console.log(arrProducts);
+
+    renderProd();
+
+});
+
+
+function renderProd() {
+    const prodSect = document.querySelector("#dashboard-section");
+    prodSect.innerHTML = "";  // Clear previous content
+
+    arrProducts.forEach(element => {
+        const newDiv = document.createElement("div");  // Create a new div for each product
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "checkbox";
+        checkbox.value = element._prod_id;
+        checkbox.id = element._prod_id;
+
+        newDiv.appendChild(checkbox);  // Append checkbox to the div
+        newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${element._prod_name}</span><p>${element._prod_price}</p>`;
+
+        prodSect.appendChild(newDiv);  // Append each new product directly to prodSect
+    });
+}
+btnadd2cart.addEventListener("click", () => {
+    const getChk = document.getElementsByName("checkbox");  
+    getChk.forEach((checkbox) => {
+        if (checkbox.checked) {
+            console.log(checkbox.value);  // This will log the value of checked checkboxes
+
+            add2cart(checkbox.value)
+            console.log(add2cart)
+        }
+    });
 
 });
