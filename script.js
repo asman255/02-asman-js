@@ -44,8 +44,25 @@ let arrProducts = [];
 let arrCart = [];
 //create product then put in arr
 const createProduct = (prod_id, prod_name, prod_price, prod_img, prod_status) => {
-    const newProduct = new products(prod_id, prod_name, prod_price, prod_img, prod_status);
-    arrProducts.push(newProduct);
+    const newProduct = new products(prod_id, prod_name, prod_price, prod_img, true);
+    // arrProducts.push(newProduct);
+    let findDup = false
+    arrProducts.forEach(element => {
+
+        if (prod_name === element._prod_name && prod_price === element._prod_price && prod_status != true) {
+            alert("Duplicate Product")
+            findDup = true
+        }
+        else {
+
+            findDup = false
+        }
+    });
+    console.log(arrProducts)
+    if (!findDup) {
+        arrProducts.push(newProduct);
+    }
+
     return newProduct;
 };
 
@@ -57,7 +74,7 @@ const createProduct = (prod_id, prod_name, prod_price, prod_img, prod_status) =>
 
 
 const add2cart = (item) => {
-    // console.log(item)
+    //  console.log(item)
     arrCart.push(item);
 
     // if (arrCart.includes(item._prod_id)) {
@@ -67,6 +84,7 @@ const add2cart = (item) => {
     // if ((item._prod_status === true) && (arrCart.includes(item._prod_id) === false)) {
     //     arrCart.push(item);
     // }
+
 };
 
 const calCart = (cartItems) => {
@@ -102,8 +120,9 @@ const btnadd2cart = document.getElementById("btnadd2cart");
 
 btnCreate.addEventListener("click", () => {
     const idDate = Date.now();
-    const newProduct = new products(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
-    arrProducts.push(newProduct);
+    // const newProduct = new products(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
+    const newProduct = createProduct(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
+    // arrProducts.push(newProduct);
     // console.log(arrProducts);
 
     renderProd();
@@ -157,13 +176,12 @@ btnadd2cart.addEventListener("click", () => {
         const findProd = arrProducts.find((e) => {
             return e._prod_id == element
         })
-        console.log(findProd._prod_name)
+        // console.log(findProd._prod_name)
         if (findProd) {
             const newDiv = document.createElement("div");
             newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${findProd._prod_name}</span><p>${findProd._prod_price}</p>`;
 
-            cartSect.appendChild(newDiv);  // Append each new product directly to prodSect
-
+            cartSect.appendChild(newDiv);
         }
     });
 
