@@ -246,12 +246,13 @@ function renderProd() {
                 return element._prod_id == delID
             })
             arrProducts.length <= 0 ? arrProducts = [] : arrProducts.splice(findDel, 1)
-
+            cartSect.innerHTML = "";
             renderProd();
         })
         ///////// cart section
 
         cartSect.innerHTML = "";
+        console.log("here1")
         arrCart.forEach(element => {
 
             const findProd = arrProducts.find((e) => {
@@ -283,7 +284,8 @@ function renderProd() {
                     })
 
                     arrCart.splice(findDel, 1)
-                    renderProd();
+                    cartSect.innerHTML = "";
+                    renderProd()
                 })
             }
         });
