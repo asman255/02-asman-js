@@ -63,16 +63,17 @@ const add2cart = (item) => {
     arrCart.push(item);
 
 
+
 };
 
-const calCart = (cartItems) => {
-    let cartSum = 0;
-    cartItems.forEach(item => {
+// const calCart = (cartItems) => {
+//     let cartSum = 0;
+//     cartItems.forEach(item => {
 
-        cartSum += item._prod_price;
-    });
-    return cartSum
-};
+//         cartSum += item._prod_price;
+//     });
+//     return cartSum
+// };
 
 const calPrice = () => {
 
@@ -99,8 +100,35 @@ const prod_img = document.getElementById("prod_img");
 // const prod_status = document.getElementById("prod_status");
 const btnadd2cart = document.getElementById("btnadd2cart");
 const btnCal = document.getElementById("btnCal");
+const btnUpdate = document.getElementById("btnUpdate")
+
+
+btnUpdate.addEventListener("click", () => {
+    const upID = btnUpdate.value
+    const newName = document.getElementById("edit_prod_name").value
+    const newPrice = document.getElementById("edit_prod_price").value
+    const newImg = document.getElementById("edit_prod_img").value
+
+    const findMatch = arrProducts.find((el) => {
+        return el._prod_id == upID
+    })
+
+    findMatch._prod_name = newName
+    findMatch._prod_price = newPrice
+    findMatch._prod_img = newImg
+    console.log(arrProducts)
+    document.getElementById("form-edit").hidden = true
+    alert("Your request has been submitted")
+    renderProd();
+
+})
 
 btnCreate.addEventListener("click", () => {
+    if (!prod_name.value.trim() || !prod_img.value.trim() || !prod_price.value) {
+        alert("Please Do not leave any field blank")
+        return
+
+    }
     const idDate = Date.now();
     // const newProduct = new products(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
     const newProduct = createProduct(idDate, prod_name.value, prod_price.value, prod_img.value);
@@ -112,50 +140,114 @@ btnCreate.addEventListener("click", () => {
 });
 
 
+btnadd2cart.addEventListener("click", () => {
+    if (arrProducts <= 0) {
+        alert("There is no Product yet, please add product")
+        return
+    }
+    const getChk = document.getElementsByName("checkbox");
+    let i = 0;
+    getChk.forEach((checkbox) => {
+
+        if (checkbox.checked) {
+            i++
+            add2cart(checkbox.value)
+        }
+
+    });
+    if (i < 1) {
+        alert("Please Select at least 1 Product")
+        return
+    }
+    renderProd();
+});
+
+
+btnCal.addEventListener("click", () => {
+    if (arrCart.length <= 0) {
+        alert("Please Add atleast 1 Product to Cart")
+        return
+    }
+    const finaPrice = document.getElementById("final-price")
+    finaPrice.innerText = "You have to pay: " + calPrice()
+    renderProd()
+    // console.log(calPrice())
+})
+
+
 function renderProd() {
-    const prodSect = document.querySelector("#dashboard-section");
-    prodSect.innerHTML = "";  // Clear previous content
+    console.log(arrCart)
+    const textboxes = document.querySelectorAll('#form input');
+    textboxes.forEach(textbox => {
+        textbox.value = '';
+    });
+
+    const prodSect = document.getElementById("dashboard-section");
+    prodSect.innerHTML = "";
+    const cartSect = document.getElementById("cart-section");
+    // cartSect.innerHTML = "";  // Clear previous content
 
     arrProducts.forEach(element => {
-        const newDiv = document.createElement("div");  // Create a new div for each product
 
+        const newDiv = document.createElement("div");
+        newDiv.classList.add("divProd")
+        //checkbox
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.name = "checkbox";
         checkbox.value = element._prod_id;
         checkbox.id = element._prod_id;
 
-        newDiv.appendChild(checkbox);  // Append checkbox to the div
-        newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${element._prod_name}</span><p>${element._prod_price}</p>`;
+        newDiv.appendChild(checkbox);
+        newDiv.innerHTML += `<img src="${element._prod_img}" alt=""><div class="name"><h3>${element._prod_name}</h3><p>${element._prod_price}</p></div>`;
 
-        prodSect.appendChild(newDiv);  // Append each new product directly to prodSect
+        prodSect.appendChild(newDiv);
+        ///editBtn
+        const editBtn = document.createElement("button")
+        editBtn.name = "btnEdit"
+        editBtn.textContent = "EDIT"
+        newDiv.appendChild(editBtn);
+        editBtn.addEventListener("click", () => {
+            const edit_prod_name = document.getElementById("edit_prod_name")
+            const edit_prod_price = document.getElementById("edit_prod_price")
+            const edit_prod_img = document.getElementById("edit_prod_img")
+            edit_prod_name.value = element._prod_name
+            edit_prod_price.value = element._prod_price
+            edit_prod_img.value = element._prod_img
 
-        const btnDel = document.createElement("button")
-        btnDel.del = "btnDel"
-        btnDel.innerText = "Delete"
-        btnDel.value = element._prod_id
-        newDiv.appendChild(btnDel);
-
-        btnDel.addEventListener("click", () => {
-            // console.log(btnDel.value)
-            const delID = btnDel.value
-            const findDel = arrProducts.findIndex((element) => {
-                return element._prod_id == delID
-            })
-
-            arrProducts.splice(findDel, 1)
-            renderProd();
+            btnUpdate.value = [element.prod_id]
+            document.getElementById("form-edit").hidden = false
+            renderProd()
         })
-        ///////// cart section
-        const cartSect = document.querySelector("#cart-section");
-        cartSect.innerHTML = "";  // Clear previous content
 
+        // ///delBtn
+        // const btnDel = document.createElement("button")
+        // btnDel.del = "btnDel"
+        // btnDel.innerText = "Delete"
+        // btnDel.value = element._prod_id
+        // newDiv.appendChild(btnDel);
+
+        // btnDel.addEventListener("click", () => {
+        //     document.getElementById("form-edit").hidden = true
+        //     const delID = btnDel.value
+        //     const findDel = arrProducts.findIndex((element) => {
+        //         return element._prod_id == delID
+        //     })
+        //     arrProducts.length <= 0 ? arrProducts = [] : arrProducts.splice(findDel, 1)
+
+        //     renderProd();
+        // })
+        ///////// cart section
+
+        cartSect.innerHTML = "";
         arrCart.forEach(element => {
-            // console.log(element)
+
             const findProd = arrProducts.find((e) => {
+
                 return e._prod_id == element
+
             })
-            // console.log(findProd._prod_name)
+
             if (findProd) {
 
                 const newDiv = document.createElement("div");
@@ -186,29 +278,7 @@ function renderProd() {
 
 
     });
+
+    // console.log(arrProducts, arrProducts.length)
+    // console.log(arrCart, arrCart.length)
 }
-
-
-btnadd2cart.addEventListener("click", () => {
-    const getChk = document.getElementsByName("checkbox");
-    getChk.forEach((checkbox) => {
-        if (checkbox.checked) {
-            // console.log(checkbox.value);
-
-            add2cart(checkbox.value)
-            // console.log(arrCart)
-        }
-    });
-
-    renderProd();
-
-});
-
-
-btnCal.addEventListener("click", () => {
-
-    const finaPrice = document.getElementById("final-price")
-    finaPrice.innerText = calPrice()
-    renderProd()
-    // console.log(calPrice())
-})

@@ -5,35 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="form">
-        <!-- <input type="text" id="prod_id" placeholder="Product ID"> -->
-        <input type="text" id="prod_name" placeholder="Product Name">
-        <input type="number" id="prod_price" placeholder="Product Price">
-        <input type="text" id="prod_img" placeholder="Product Image">
-        <!-- <input type="text" id="prod_status" placeholder="Product Status (true/false)"> -->
-        <button id="btnCreate">Create Product</button>
-    </div>
+    <main class="">
+        <div id="form" class="">
+            <!-- <input type="text" id="prod_id" placeholder="Product ID"> -->
+            <input type="text" id="prod_name" placeholder="Product Name">
+            <input type="number" id="prod_price" placeholder="Product Price" min="1">
+            <input type="url" id="prod_img" placeholder="Product Image" pattern="https://.*">
+            <!-- <input type="text" id="prod_status" placeholder="Product Status (true/false)"> -->
+            <button id="btnCreate">Create Product</button>
+        </div>
 
-    <div id="dashboard-section">
-        
+        <div id="form-edit" hidden>
+            <input type="text" id="edit_prod_name" placeholder="New Product Name Here">
+            <input type="number" id="edit_prod_price" placeholder="New Product Price Here" min="1">
+            <input type="url" id="edit_prod_img" placeholder="New Product Image Here" pattern="https://.*">
+            <button id="btnUpdate">Update Product</button>
+        </div>
 
-    </div>
-    <div id="add2cart">
-        <button id="btnadd2cart">Add to Cart</button>
-    </div>
-
-    <div id="cart-section">
-
-    </div>
+        <div id="dashboard-section">
 
 
-    <div>
-        <button id="btnCal">Calculate Final Price</button>
-        <span id="final-price"></span>
-    </div>
+        </div>
+        <div id="add2cart">
+            <button id="btnadd2cart">Add to Cart</button>
+        </div>
+
+        <div id="cart-section">
+
+        </div>
+
+
+        <div>
+            <button id="btnCal">Calculate Final Price</button>
+            <span id="final-price"></span>
+        </div>
+
+
+
+
+    </main>
 
 
     <script src="script.js"></script>
