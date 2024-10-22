@@ -1,10 +1,10 @@
 class products {
-    constructor(prod_id, prod_name, prod_price, prod_img, prod_status) {
+    constructor(prod_id, prod_name, prod_price, prod_img) {
         this._prod_id = prod_id;
         this._prod_name = prod_name;
         this._prod_price = prod_price;
         this._prod_img = prod_img;
-        this._prod_status = prod_status;
+        // this._prod_status = prod_status;
     }
 
     get prod_id() {
@@ -16,9 +16,7 @@ class products {
     get prod_price() {
         return this._prod_price
     }
-    get prod_status() {
-        return this._prod_status
-    }
+
 
     set prod_id(id) {
         this._prod_id = id;
@@ -30,26 +28,20 @@ class products {
     set prod_price(price) {
         this._prod_price = price
     }
-    set prod_status(status) {
-        this._prod_status = status
-    }
+
 }
 
-// item = new products(1, "pro1", 10, "img1", true);
-// item = new products(2, "pro2", 20, "img1", false);
-// item = new products(3, "pro3", 30, "img1", true);
-// item = new products(4, "pro4", 40, "img1", true);
 
 let arrProducts = [];
 let arrCart = [];
 //create product then put in arr
-const createProduct = (prod_id, prod_name, prod_price, prod_img, prod_status) => {
-    const newProduct = new products(prod_id, prod_name, prod_price, prod_img, true);
+const createProduct = (prod_id, prod_name, prod_price, prod_img) => {
+    const newProduct = new products(prod_id, prod_name, prod_price, prod_img);
     // arrProducts.push(newProduct);
     let findDup = false
     arrProducts.forEach(element => {
 
-        if (prod_name === element._prod_name && prod_price === element._prod_price && prod_status != true) {
+        if (prod_name === element._prod_name && prod_price === element._prod_price) {
             alert("Duplicate Product")
             findDup = true
         }
@@ -58,7 +50,7 @@ const createProduct = (prod_id, prod_name, prod_price, prod_img, prod_status) =>
             findDup = false
         }
     });
-    console.log(arrProducts)
+
     if (!findDup) {
         arrProducts.push(newProduct);
     }
@@ -66,26 +58,10 @@ const createProduct = (prod_id, prod_name, prod_price, prod_img, prod_status) =>
     return newProduct;
 };
 
-// const prod1 = createProduct(1, "Super Widget", 10, "img1", true);
-// const prod2 = createProduct(2, "Mega Widget", 20, "img2", false);
-// const prod3 = createProduct(3, "Ultra Widget", 30, "img3", true);
-
-// console.log("Products created:", arrProducts);
-
-
 const add2cart = (item) => {
     //  console.log(item)
     arrCart.push(item);
 
-
-
-    // if (arrCart.includes(item._prod_id)) {
-    //     console.log("dup")
-    //     return
-    // }
-    // if ((item._prod_status === true) && (arrCart.includes(item._prod_id) === false)) {
-    //     arrCart.push(item);
-    // }
 
 };
 
@@ -98,32 +74,22 @@ const calCart = (cartItems) => {
     return cartSum
 };
 
-// add2cart(prod1)
-// add2cart(prod2)
-// add2cart(prod3)
-
-
-
-// console.log(calCart(arrCart))
-// console.log(arrProducts[0]._prod_name);
 
 /////////////////////////dom
 
 const btnCreate = document.getElementById("btnCreate");
-const prod_id = document.getElementById("prod_id");
+// const prod_id = document.getElementById("prod_id");
 const prod_name = document.getElementById("prod_name");
 const prod_price = document.getElementById("prod_price");
 const prod_img = document.getElementById("prod_img");
-const prod_status = document.getElementById("prod_status");
+// const prod_status = document.getElementById("prod_status");
 
 const btnadd2cart = document.getElementById("btnadd2cart");
-
-
 
 btnCreate.addEventListener("click", () => {
     const idDate = Date.now();
     // const newProduct = new products(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
-    const newProduct = createProduct(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
+    const newProduct = createProduct(idDate, prod_name.value, prod_price.value, prod_img.value);
     // arrProducts.push(newProduct);
     // console.log(arrProducts);
 
@@ -162,18 +128,51 @@ function renderProd() {
             const findDel = arrProducts.findIndex((element) => {
                 return element._prod_id == delID
             })
+
+            arrProducts.splice(findDel, 1)
+            renderProd();
         })
+        ///////// cart section
+        const cartSect = document.querySelector("#cart-section");
+        cartSect.innerHTML = "";  // Clear previous content
+
+        arrCart.forEach(element => {
+            // console.log(element)
+            const findProd = arrProducts.find((e) => {
+                return e._prod_id == element
+            })
+            // console.log(findProd._prod_name)
+            if (findProd) {
+
+                const newDiv = document.createElement("div");
+                newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${findProd._prod_name}</span><p>${findProd._prod_price}</p>`;
+
+                cartSect.appendChild(newDiv);
+
+                const btnDel = document.createElement("button")
+                btnDel.del = "btnDel"
+                btnDel.innerText = "Delete"
+                btnDel.value = findProd._prod_id
+                newDiv.appendChild(btnDel);
+
+                btnDel.addEventListener("click", () => {
+
+                    const delID = btnDel.value
+                    const findDel = arrCart.findIndex((element) => {
+
+                        return element == delID
+                    })
+
+                    arrCart.splice(findDel, 1)
+                    renderProd();
+                })
+            }
+        });
+        ////////
+
 
     });
 }
-
-// const btnDel = document.getElementsByName("btnDel");
-// btnDel.addEventListener("click",()=>{
-//     console.log("test")
-// })
-
-
-
 
 
 btnadd2cart.addEventListener("click", () => {
@@ -187,24 +186,6 @@ btnadd2cart.addEventListener("click", () => {
         }
     });
 
-
-
-
-    const cartSect = document.querySelector("#cart-section");
-    cartSect.innerHTML = "";  // Clear previous content
-
-    arrCart.forEach(element => {
-        // console.log(element)
-        const findProd = arrProducts.find((e) => {
-            return e._prod_id == element
-        })
-        // console.log(findProd._prod_name)
-        if (findProd) {
-            const newDiv = document.createElement("div");
-            newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${findProd._prod_name}</span><p>${findProd._prod_price}</p>`;
-
-            cartSect.appendChild(newDiv);
-        }
-    });
+    renderProd();
 
 });
