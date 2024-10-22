@@ -77,6 +77,8 @@ const add2cart = (item) => {
     //  console.log(item)
     arrCart.push(item);
 
+
+
     // if (arrCart.includes(item._prod_id)) {
     //     console.log("dup")
     //     return
@@ -147,10 +149,30 @@ function renderProd() {
         newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${element._prod_name}</span><p>${element._prod_price}</p>`;
 
         prodSect.appendChild(newDiv);  // Append each new product directly to prodSect
+
+        const btnDel = document.createElement("button")
+        btnDel.del = "btnDel"
+        btnDel.innerText = "Delete"
+        btnDel.value = element._prod_id
+        newDiv.appendChild(btnDel);
+
+        btnDel.addEventListener("click", () => {
+            // console.log(btnDel.value)
+            const delID = btnDel.value
+            const findDel = arrProducts.findIndex((element) => {
+                return element._prod_id == delID
+            })
+        })
+
     });
-
-
 }
+
+// const btnDel = document.getElementsByName("btnDel");
+// btnDel.addEventListener("click",()=>{
+//     console.log("test")
+// })
+
+
 
 
 
