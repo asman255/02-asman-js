@@ -57,13 +57,16 @@ const createProduct = (prod_id, prod_name, prod_price, prod_img, prod_status) =>
 
 
 const add2cart = (item) => {
-    if (arrCart.includes(item._prod_id)) {
-        console.log("dup")
-        return
-    }
-    if ((item._prod_status === true) && (arrCart.includes(item._prod_id) === false)) {
-        arrCart.push(item);
-    }
+    // console.log(item)
+    arrCart.push(item);
+
+    // if (arrCart.includes(item._prod_id)) {
+    //     console.log("dup")
+    //     return
+    // }
+    // if ((item._prod_status === true) && (arrCart.includes(item._prod_id) === false)) {
+    //     arrCart.push(item);
+    // }
 };
 
 const calCart = (cartItems) => {
@@ -101,7 +104,7 @@ btnCreate.addEventListener("click", () => {
     const idDate = Date.now();
     const newProduct = new products(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
     arrProducts.push(newProduct);
-    console.log(arrProducts);
+    // console.log(arrProducts);
 
     renderProd();
 
@@ -126,15 +129,41 @@ function renderProd() {
 
         prodSect.appendChild(newDiv);  // Append each new product directly to prodSect
     });
+
+
 }
+
+
+
 btnadd2cart.addEventListener("click", () => {
-    const getChk = document.getElementsByName("checkbox");  
+    const getChk = document.getElementsByName("checkbox");
     getChk.forEach((checkbox) => {
         if (checkbox.checked) {
-            console.log(checkbox.value);  // This will log the value of checked checkboxes
+            // console.log(checkbox.value);
 
             add2cart(checkbox.value)
-            console.log(add2cart)
+            // console.log(arrCart)
+        }
+    });
+
+
+
+
+    const cartSect = document.querySelector("#cart-section");
+    cartSect.innerHTML = "";  // Clear previous content
+
+    arrCart.forEach(element => {
+        // console.log(element)
+        const findProd = arrProducts.find((e) => {
+            return e._prod_id == element
+        })
+        console.log(findProd._prod_name)
+        if (findProd) {
+            const newDiv = document.createElement("div");
+            newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${findProd._prod_name}</span><p>${findProd._prod_price}</p>`;
+
+            cartSect.appendChild(newDiv);  // Append each new product directly to prodSect
+
         }
     });
 
