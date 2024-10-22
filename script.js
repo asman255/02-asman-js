@@ -108,6 +108,11 @@ btnUpdate.addEventListener("click", () => {
     const newName = document.getElementById("edit_prod_name").value
     const newPrice = document.getElementById("edit_prod_price").value
     const newImg = document.getElementById("edit_prod_img").value
+    const urlPattern = new RegExp("(https?:\/\/.*\.(?:png|jpg))");
+    if (!urlPattern.test(document.getElementById("edit_prod_img").value.trim())) {
+        alert("Please use an image URL with a .jpg, .png, or .gif extension");
+        return;
+    }
 
     const findMatch = arrProducts.find((el) => {
         return el._prod_id == upID
@@ -129,6 +134,13 @@ btnCreate.addEventListener("click", () => {
         return
 
     }
+
+    const urlPattern = new RegExp("(https?:\/\/.*\.(?:png|jpg))");
+    if (!urlPattern.test(prod_img.value.trim())) {
+        alert("Please use an image URL with a .jpg, .png, or .gif extension");
+        return;
+    }
+
     const idDate = Date.now();
     // const newProduct = new products(idDate, prod_name.value, prod_price.value, prod_img.value, prod_status.value);
     const newProduct = createProduct(idDate, prod_name.value, prod_price.value, prod_img.value);
@@ -171,7 +183,7 @@ btnCal.addEventListener("click", () => {
     const finaPrice = document.getElementById("final-price")
     finaPrice.innerText = "You have to pay: " + calPrice()
     renderProd()
-    
+
 })
 
 
