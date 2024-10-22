@@ -171,7 +171,7 @@ btnCal.addEventListener("click", () => {
     const finaPrice = document.getElementById("final-price")
     finaPrice.innerText = "You have to pay: " + calPrice()
     renderProd()
-    // console.log(calPrice())
+    
 })
 
 
@@ -199,7 +199,7 @@ function renderProd() {
         checkbox.id = element._prod_id;
 
         newDiv.appendChild(checkbox);
-        newDiv.innerHTML += `<img src="${element._prod_img}" alt=""><div class="name"><h3>${element._prod_name}</h3><p>${element._prod_price}</p></div>`;
+        newDiv.innerHTML += `<img src="${element._prod_img}" alt=""><div class="name"><h3>${element._prod_name}</h3><p>$ ${element._prod_price}</p></div>`;
 
         prodSect.appendChild(newDiv);
         ///editBtn
@@ -220,23 +220,23 @@ function renderProd() {
             renderProd()
         })
 
-        // ///delBtn
-        // const btnDel = document.createElement("button")
-        // btnDel.del = "btnDel"
-        // btnDel.innerText = "Delete"
-        // btnDel.value = element._prod_id
-        // newDiv.appendChild(btnDel);
+        ///delBtn
+        const btnDel = document.createElement("button")
+        btnDel.del = "btnDel"
+        btnDel.innerText = "Delete"
+        btnDel.value = element._prod_id
+        newDiv.appendChild(btnDel);
 
-        // btnDel.addEventListener("click", () => {
-        //     document.getElementById("form-edit").hidden = true
-        //     const delID = btnDel.value
-        //     const findDel = arrProducts.findIndex((element) => {
-        //         return element._prod_id == delID
-        //     })
-        //     arrProducts.length <= 0 ? arrProducts = [] : arrProducts.splice(findDel, 1)
+        btnDel.addEventListener("click", () => {
+            document.getElementById("form-edit").hidden = true
+            const delID = btnDel.value
+            const findDel = arrProducts.findIndex((element) => {
+                return element._prod_id == delID
+            })
+            arrProducts.length <= 0 ? arrProducts = [] : arrProducts.splice(findDel, 1)
 
-        //     renderProd();
-        // })
+            renderProd();
+        })
         ///////// cart section
 
         cartSect.innerHTML = "";
@@ -249,9 +249,10 @@ function renderProd() {
             })
 
             if (findProd) {
-
+                console.log(findProd)
                 const newDiv = document.createElement("div");
-                newDiv.innerHTML += `<img src="https://placehold.co/100" alt=""><span>${findProd._prod_name}</span><p>${findProd._prod_price}</p>`;
+                newDiv.classList.add("divProd")
+                newDiv.innerHTML += `<img src="${findProd._prod_img}" alt=""><div class="name"><h3>${findProd._prod_name}</h3><p>$ ${findProd._prod_price}</p></div>`;
 
                 cartSect.appendChild(newDiv);
 
