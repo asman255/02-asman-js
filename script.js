@@ -35,12 +35,26 @@ class products {
     }
 }
 
- item = new products(1, "pro1", 10, "img1", true);
- item = new products(2, "pro2", 20, "img1", false);
- item = new products(3, "pro3", 30, "img1", true);
- item = new products(4, "pro4", 40, "img1", true);
+// item = new products(1, "pro1", 10, "img1", true);
+// item = new products(2, "pro2", 20, "img1", false);
+// item = new products(3, "pro3", 30, "img1", true);
+// item = new products(4, "pro4", 40, "img1", true);
 
+let arrProducts = [];
 let arrCart = [];
+//create product then put in arr
+const createProduct = (prod_id, prod_name, prod_price, prod_img, prod_status) => {
+    const newProduct = new products(prod_id, prod_name, prod_price, prod_img, prod_status);
+    arrProducts.push(newProduct);
+    return newProduct;
+};
+
+// const prod1 = createProduct(1, "Super Widget", 10, "img1", true);
+// const prod2 = createProduct(2, "Mega Widget", 20, "img2", false);
+// const prod3 = createProduct(3, "Ultra Widget", 30, "img3", true);
+
+// console.log("Products created:", arrProducts);
+
 
 const add2cart = (item) => {
     if (arrCart.includes(item._prod_id)) {
@@ -61,8 +75,28 @@ const calCart = (cartItems) => {
     return cartSum
 };
 
-add2cart(item)
+// add2cart(prod1)
+// add2cart(prod2)
+// add2cart(prod3)
 
 
- console.log(calCart(arrCart))
-console.log(item);
+
+// console.log(calCart(arrCart))
+// console.log(arrProducts[0]._prod_name);
+
+/////////////////////////dom
+
+const btnCreate = document.getElementById("btnCreate");
+const prod_id = document.getElementById("prod_id");
+const prod_name = document.getElementById("prod_name");
+const prod_price = document.getElementById("prod_price");
+const prod_img = document.getElementById("prod_img");
+const prod_status = document.getElementById("prod_status");
+prod_id.innerText=Date.now();
+
+btnCreate.addEventListener("click", () => {
+    const newProduct = new products(Date.now(), prod_name.value, prod_price.value, prod_img.value, prod_status.value);
+    arrProducts.push(newProduct);
+    console.log(arrProducts);
+
+});
