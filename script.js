@@ -189,3 +189,29 @@ btnadd2cart.addEventListener("click", () => {
     renderProd();
 
 });
+
+const calPrice = () => {
+
+    let sum=0;
+    const result = arrCart.forEach(element => {
+
+        const findMatch = arrProducts.find((el) => {
+            // console.log(el._prod_id,element)
+            return el._prod_id == element
+        })
+        console.log(findMatch.prod_price)
+        sum = sum + Number(findMatch.prod_price)
+    });
+    return sum
+
+}
+
+
+const btnCal = document.getElementById("btnCal");
+btnCal.addEventListener("click", () => {
+
+    const finaPrice = document.getElementById("final-price")
+    finaPrice.innerText = calPrice()
+    
+    // console.log(calPrice())
+})
